@@ -144,6 +144,14 @@ function initializeCompGB (cboard, compGB) {
     cboard.append(compGB.getGrid());
 }
 
+function showModalOverlay() {
+    document.getElementById('modalOverlay').classList.add('active');
+}
+
+function hideModalOverlay() {
+    document.getElementById('modalOverlay').classList.remove('active');
+}
+
 // Objects for main loop
 let playerGB = Gameboard();
 let compGB = Gameboard();
@@ -156,7 +164,8 @@ pboard.appendChild(playerGB.getGrid());
 let cboard = document.querySelector('#cboard');
 cboard.appendChild(compGB.getGrid());
 
-initializeCompGB (cboard, compGB)
+initializeCompGB (cboard, compGB);
+showModalOverlay();
 
 // Logic for the popup form
 let popup = document.querySelector('#popup');
@@ -177,6 +186,7 @@ submit.addEventListener('click', function (event) {
         }
     });
     if (err === true) {
+        hideModalOverlay();
         pboard.removeChild(pboard.firstChild);
         pboard.append(playerGB.getGrid());
         popup.style.display = "none";
@@ -201,20 +211,24 @@ submit.addEventListener('click', function (event) {
             if (compGB.allSunk() && playerGB.allSunk()) {
                 winPop.style.display = 'block';
                 winner.innerHTML = 'Tie';
+                showModalOverlay();
             }
             else if (compGB.allSunk()) {
                 winPop.style.display = 'block';
                 winner.innerHTML = 'You win';
+                showModalOverlay();
             }
             else if (playerGB.allSunk()) {
                 winPop.style.display = 'block';
                 winner.innerHTML = 'You lose';
+                showModalOverlay();
             }
             // Reset game
             let again = document.querySelector('.again');
             again.addEventListener('click', () => {
                 // Remove the event listener before resetting
                 cboard.removeEventListener('click', clickHandler);
+                hideModalOverlay();
                 
                 playerGB.resetBoard();
                 compGB.resetBoard();
