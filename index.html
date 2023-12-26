@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Rubik+Doodle+Shadow&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h1 id="title">Battleship</h1>
+    <div class="modal-overlay" id="modalOverlay"></div>
     <div id="popup">
-        Place your ships!
+        <h6 class="place">Place your ships!</h6>
         <form>
             <h6>Ship of length 2</h6>
             <div class="coordinates">
@@ -55,12 +61,18 @@
                     <input type="checkbox">   
                 </div>
              </div>
-             <input type="button" value="Submit" id="formSubmit">
              <h6 id="error">Invalid coordinates. Try again!</h6>
+             <input type="button" value="Submit" id="formSubmit">
         </form>
     </div>
-    <div id="pboard"></div>
-    <div id="cboard"></div>
+    <div>
+        <div id="pboard"></div>  
+        <h6>Your ship</h6>
+    </div>
+    <div>
+        <div id="cboard"></div>
+        <h6>Enemy ship</h6>
+    </div>>
     <div class="winPop">
         <h3 class="winner"></h3>
         <button class="again">Play again?</button>
