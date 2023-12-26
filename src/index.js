@@ -5,11 +5,11 @@ function Ship(user_length = 0) {
         hits++;
     }
     const isSunk = () => {
-        if (length === hits) { 
-            return true; 
+        if (length === hits) {
+            return true;
         }
-        else { 
-            return false; 
+        else {
+            return false;
         }
     }
     return { hit, isSunk }
@@ -18,7 +18,7 @@ function Ship(user_length = 0) {
 function Gameboard() {
     let board = Array.from({ length: 10 }, () => Array(10).fill(0));
     let ships = [];
-    
+
     const placeShip = (x, y, length, isVertical) => {
         if (x < 0 || y < 0 || x >= 10 || y >= 10) {
             return false;
@@ -33,12 +33,14 @@ function Gameboard() {
             }
         }
         const ship = Ship(length);
-        ships.push(ship); 
+        ships.push(ship);
         for (let i = 0; i < length; i++) {
             if (!isVertical) {
-                board[x][i + y] = ship;
+                if (board[y][i + x] !== 0) { return false; }
+                board[y][i + x] = ship;
             } else {
-                board[i + x][y] = ship;
+                if (board[y][i + x] !== 0) { return false; }
+                board[i + y][x] = ship;
             }
         }
     };
@@ -48,14 +50,14 @@ function Gameboard() {
             return false;
         }
         if (board[x][y] === 'missed' || board[x][y] === 'hit') {
-            return false; 
+            return false;
         }
         const ship = board[x][y];
         if (ship) {
             ship.hit();
-            board[x][y] = 'hit'; 
+            board[x][y] = 'hit';
         } else {
-            board[x][y] = 'missed'; 
+            board[x][y] = 'missed';
             return false;
         }
     };
@@ -64,7 +66,7 @@ function Gameboard() {
         return ships.every(ship => ship.isSunk());
     }
 
-    const getGrid = () => {  
+    const getGrid = () => {
         let grid = document.createElement('div');
         grid.classList.add('grid');
         for (let i = 0; i < 10; i++) {
@@ -72,24 +74,28 @@ function Gameboard() {
                 let tile = document.createElement('div')
                 tile.classList.add('tile');
                 if (board[i][j] === 'missed') {
-                    tile.classList.add('missed');  
+                    tile.classList.add('missed');
                 }
                 else if (board[i][j] === 'hit') {
-                    tile.classList.add('hit');  
+                    tile.classList.add('hit');
                 }
                 else if (board[i][j] === 0) {
                     tile.classList.add('tile');
                 }
                 else {
-                    tile.classList.add('ship');  
+                    tile.classList.add('ship');
                 }
                 grid.appendChild(tile);
             }
         }
         return grid;
-    }    
+    }
 
-    return { placeShip, receiveAttack, allSunk, getGrid };
+    const resetBoard = () => {
+        board = Array.from({ length: 10 }, () => Array(10).fill(0));
+    }
+
+    return { placeShip, receiveAttack, allSunk, getGrid, resetBoard };
 }
 
 const Player = () => {
@@ -139,8 +145,8 @@ const ComputerPlayer = () => {
         return [
             [x - 1, y],
             [x + 1, y],
-            [x, y - 1], 
-            [x, y + 1]  
+            [x, y - 1],
+            [x, y + 1]
         ];
     };
 
@@ -167,7 +173,7 @@ cboard.appendChild(compGB.getGrid());
 let popup = document.querySelector('#popup');
 let submit = document.querySelector('#formSubmit');
 let error = document.querySelector('#error');
-submit.addEventListener('click', function(event) {
+submit.addEventListener('click', function (event) {
     let lengths = [2, 3, 3, 4, 5];
     let coordinateElements = document.querySelectorAll('.coordinates');
     let err = true;
@@ -175,7 +181,7 @@ submit.addEventListener('click', function(event) {
         let x = coordinateElement.querySelector('input:nth-child(1)').value;
         let y = coordinateElement.querySelector('input:nth-child(2)').value;
         let vertical = coordinateElement.querySelector('input[type="checkbox"]').checked;
-        let length = lengths[index]; 
+        let length = lengths[index];
         if (playerGB.placeShip(parseInt(x) - 1, parseInt(y) - 1, length, vertical) === false) {
             err = false;
             return;
@@ -183,13 +189,13 @@ submit.addEventListener('click', function(event) {
     });
     if (err === true) {
         pboard.removeChild(pboard.firstChild);
-        pboard.append(playerGB.getGrid());  
+        pboard.append(playerGB.getGrid());
         popup.style.display = "none";
     }
     else {
+        playerGB.resetBoard();
         error.style.display = "block";
     }
-    
 });
 
 module.exports = {
