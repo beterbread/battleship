@@ -79,12 +79,17 @@ body {
     z-index: 2;
 }
 
-form, .place {
+form, .place, .joe {
     text-align: center;
 }
 
 .place {
     font-size: 1.75vw;
+    margin-bottom: 1vw;
+}
+
+.joe {
+    font-size: 1.4vw;
     margin-bottom: 1vw;
 }
 
@@ -97,6 +102,7 @@ form > h6 {
     display: flex;
     margin-bottom: 1vw;
     gap: .75vw;
+    justify-content: center;
 }
 
 .coordinates:last-of-type {
