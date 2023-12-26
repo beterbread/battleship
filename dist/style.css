@@ -139,16 +139,16 @@ form > h6 {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(10, 40px);
-  grid-template-rows: repeat(10, 40px);
+  grid-template-columns: repeat(10, 5vw);
+  grid-template-rows: repeat(10, 5vw);
   gap: 2px;
 }
 
 .tile {
-  width: 40px;
-  height: 40px;
+  width: 5vw;
+  height: 5vw;
   background-color: #ddd;
-  border: 1px solid #888;
+  border: .25vw solid #888;
 }
 
 .missed {
