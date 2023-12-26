@@ -120,7 +120,7 @@ form > h6 {
 }
 
 #error {
-    font-size: 1.25vw;
+    font-size: 1vw;
     margin-top: -1vw;
     color: red;
     display: none;
