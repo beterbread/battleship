@@ -1,3 +1,3 @@
-Battelship
-Created with html, css, and JS
-Link
+# BattleShip
+Recipe page created with HTML, CSS, and JS
+[Live demo]((https://beterbread.github.io/battleship/))
