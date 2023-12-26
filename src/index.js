@@ -23,7 +23,7 @@ function Gameboard() {
         if (x < 0 || y < 0 || x >= 10 || y >= 10) {
             return false;
         }
-        if (isVertical) {
+        if (!isVertical) {
             if (y + length > 10) {
                 return false;
             }
@@ -77,7 +77,10 @@ function Gameboard() {
                 else if (board[i][j] === 'hit') {
                     tile.classList.add('hit');  
                 }
-                else if (board[i][j] instanceof Ship) {
+                else if (board[i][j] === 0) {
+                    tile.classList.add('tile');
+                }
+                else {
                     tile.classList.add('ship');  
                 }
                 grid.appendChild(tile);
@@ -148,29 +151,45 @@ const ComputerPlayer = () => {
     return { attackRandom };
 };
 
+// Objects for main loop
 let playerGB = Gameboard();
 let compGB = Gameboard();
 let player = Player();
 let compPlayer = ComputerPlayer();
 
+// Boards displayed
 let pboard = document.querySelector('#pboard');
 pboard.appendChild(playerGB.getGrid());
 let cboard = document.querySelector('#cboard');
 cboard.appendChild(compGB.getGrid());
 
+// Logic for the popup form
+let popup = document.querySelector('#popup');
 let submit = document.querySelector('#formSubmit');
+let error = document.querySelector('#error');
 submit.addEventListener('click', function(event) {
     let lengths = [2, 3, 3, 4, 5];
     let coordinateElements = document.querySelectorAll('.coordinates');
+    let err = true;
     coordinateElements.forEach(function (coordinateElement, index) {
         let x = coordinateElement.querySelector('input:nth-child(1)').value;
         let y = coordinateElement.querySelector('input:nth-child(2)').value;
         let vertical = coordinateElement.querySelector('input[type="checkbox"]').checked;
         let length = lengths[index]; 
-        playerGB.placeShip(x, y, length, vertical);
+        if (playerGB.placeShip(parseInt(x) - 1, parseInt(y) - 1, length, vertical) === false) {
+            err = false;
+            return;
+        }
     });
-    pboard.removeChild(pboard.firstChild);
-    pboard.append(playerGB.getGrid());
+    if (err === true) {
+        pboard.removeChild(pboard.firstChild);
+        pboard.append(playerGB.getGrid());  
+        popup.style.display = "none";
+    }
+    else {
+        error.style.display = "block";
+    }
+    
 });
 
 module.exports = {
