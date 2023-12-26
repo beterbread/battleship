@@ -51,8 +51,7 @@ table {
 
 body {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: space-evenly;
+    grid-template-columns: auto auto;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -128,9 +127,11 @@ form > h6 {
 
 /* Boards */
 
-#pboard, #cboard {
-  border: 1px solid;
-  padding: 10px;
+.boardCover {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 #cboard > .grid > .tile:hover {
@@ -139,14 +140,14 @@ form > h6 {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(10, 5vw);
-  grid-template-rows: repeat(10, 5vw);
-  gap: 2px;
+  grid-template-columns: repeat(10, 3vw);
+  grid-template-rows: repeat(10, 3vw);
+  gap: .25vw;
 }
 
 .tile {
-  width: 5vw;
-  height: 5vw;
+  width: 3vw;
+  height: 3vw;
   background-color: #ddd;
   border: .25vw solid #888;
 }
