@@ -210,17 +210,17 @@ submit.addEventListener('click', function (event) {
             let winner = document.querySelector('.winner');
             if (compGB.allSunk() && playerGB.allSunk()) {
                 winPop.style.display = 'block';
-                winner.innerHTML = 'Tie';
+                winner.innerHTML = 'Tied game!';
                 showModalOverlay();
             }
             else if (compGB.allSunk()) {
                 winPop.style.display = 'block';
-                winner.innerHTML = 'You win';
+                winner.innerHTML = 'You win!';
                 showModalOverlay();
             }
             else if (playerGB.allSunk()) {
                 winPop.style.display = 'block';
-                winner.innerHTML = 'You lose';
+                winner.innerHTML = 'You lose!';
                 showModalOverlay();
             }
             // Reset game

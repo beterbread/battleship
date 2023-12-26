@@ -62,14 +62,14 @@ body {
     grid-row: 1;
     font-family: 'Rubik Doodle Shadow', sans-serif;
     font-size: 10vw;
-    margin-top: 2vw;
-    margin-bottom: 2vw;
+    margin-top: 3vw;
+    margin-bottom: 3vw;
 }
 
 /* Form */
 
 #popup {
-    padding: 2vw;
+    padding: 1.5vw;
     border-radius: 1vw;
     background-color: white;
     position: fixed;
@@ -84,13 +84,13 @@ form, .place {
 }
 
 .place {
-    font-size: 2.5vw;
-    margin-bottom: 2vw;
+    font-size: 1.75vw;
+    margin-bottom: 1vw;
 }
 
 form > h6 {
-    font-size: 2vw;
-    margin-bottom: .75vw;
+    font-size: 1.25vw;
+    margin-bottom: .5vw;
 }
 
 .coordinates {
@@ -100,7 +100,7 @@ form > h6 {
 }
 
 .coordinates:last-of-type {
-    margin-bottom: 2vw;
+    margin-bottom: 1.5vw;
 }
 
 .vertical > h6 {
@@ -136,10 +136,13 @@ form > h6 {
 
 .boardCover > h6 {
     margin-top: 2vw;
+    font-family: 'Rubik Doodle Shadow', sans-serif;
+    font-size: 4vw;
+    margin-bottom: 3vw;
 }
 
 #cboard > .grid > .tile:hover {
-    background-color: black;
+    background-color: #eee;
 }
 
 .grid {
@@ -153,7 +156,7 @@ form > h6 {
   width: 3vw;
   height: 3vw;
   background-color: #ddd;
-  border: .25vw solid #888;
+  border: .25vw solid black;
 }
 
 .missed {
