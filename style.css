@@ -94,3 +94,11 @@ form {
 .hit {
     background-color: red;
 }
+
+.ship {
+    background-color: green;
+}
+
+#error {
+    display: none;
+}
