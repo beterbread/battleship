@@ -73,6 +73,10 @@ form {
   padding: 10px;
 }
 
+#cboard > .grid > .tile:hover {
+    background-color: black;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(10, 40px);
@@ -99,6 +103,20 @@ form {
     background-color: green;
 }
 
+#cboard > .grid > .ship {
+    background-color: #ddd;
+}
+
 #error {
     display: none;
+}
+
+.winPop {
+    display: none;
+    background-color: white;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
 }
