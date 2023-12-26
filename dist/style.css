@@ -104,7 +104,20 @@ form > h6 {
 }
 
 .vertical > h6 {
-    font-size: 1.25vw;
+    font-size: 1vw;
+}
+
+.vertical > input {
+    width: 1vw;
+    height: 1vw;
+}
+
+.coordinates > input {
+    text-align: center;
+    width: 2.5vw;
+    height: 2.5vw;
+    font-size: 1vw;
+    border: .2vw solid black;
 }
 
 #formSubmit {
@@ -117,6 +130,7 @@ form > h6 {
 
 #formSubmit:hover {
     background-color: #ddd;
+    cursor: pointer;
 }
 
 #error {
@@ -141,22 +155,23 @@ form > h6 {
     margin-bottom: 3vw;
 }
 
-#cboard > .grid > .tile:hover {
+#cboard > .grid > .tile:not(.missed):not(.hit):hover {
     background-color: #eee;
+    cursor: pointer;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(10, 3vw);
-  grid-template-rows: repeat(10, 3vw);
-  gap: .25vw;
+    display: grid;
+    grid-template-columns: repeat(10, 3vw);
+    grid-template-rows: repeat(10, 3vw);
+    gap: .25vw;
 }
 
 .tile {
-  width: 3vw;
-  height: 3vw;
-  background-color: #ddd;
-  border: .25vw solid black;
+    width: 3vw;
+    height: 3vw;
+    background-color: #ddd;
+    border: .25vw solid black;
 }
 
 .missed {
@@ -206,6 +221,7 @@ form > h6 {
 
 .again:hover {
     background-color: #ddd;
+    cursor: pointer;
 }
 
 /* Modal */
