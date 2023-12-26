@@ -69,7 +69,6 @@ body {
 /* Form */
 
 #popup {
-    display: none; /* TEMPORARY */
     padding: 2vw;
     border-radius: 1vw;
     background-color: white;
@@ -176,7 +175,7 @@ form > h6 {
 /* Winner popup */
 
 .winPop {
-    /* display: none; */
+    display: none;
     background-color: white;
     position: fixed;
     top: 50%;
