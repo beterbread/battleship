@@ -53,6 +53,7 @@ body {
     display: grid;
     grid-template-columns: auto auto;
     font-family: 'Roboto', sans-serif;
+    justify-content: space-evenly;
 }
 
 #title {
@@ -68,6 +69,7 @@ body {
 /* Form */
 
 #popup {
+    display: none; /* TEMPORARY */
     padding: 2vw;
     border-radius: 1vw;
     background-color: white;
@@ -129,9 +131,12 @@ form > h6 {
 
 .boardCover {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+}
+
+.boardCover > h6 {
+    margin-top: 2vw;
 }
 
 #cboard > .grid > .tile:hover {
@@ -171,13 +176,34 @@ form > h6 {
 /* Winner popup */
 
 .winPop {
-    display: none;
+    /* display: none; */
     background-color: white;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
+    text-align: center;
+    padding: 2vw;
+    border-radius: 1vw;
+}
+
+.winner {
+    font-size: 4vw;
+    margin-bottom: 1vw;
+}
+
+.again {
+    font-size: 2vw;
+    border-radius: .25vw;
+    border: solid black .1vw;
+    background-color: white;
+    height: 4vw;
+    width: 15vw;
+}
+
+.again:hover {
+    background-color: #ddd;
 }
 
 /* Modal */
