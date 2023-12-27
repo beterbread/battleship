@@ -168,20 +168,27 @@ showModalOverlay();
 const popup = document.querySelector('#popup');
 const submit = document.querySelector('#formSubmit');
 const error = document.querySelector('#error');
+const popTitle = document.querySelector('.popTitle');
+let lengths = [2, 3, 3, 4, 5];
 submit.addEventListener('click', (event) => {
-  const lengths = [2, 3, 3, 4, 5];
-  const coordinateElements = document.querySelectorAll('.coordinates');
-  let err = true;
-  coordinateElements.forEach((coordinateElement, index) => {
-    const x = coordinateElement.querySelector('input:nth-child(1)').value;
-    const y = coordinateElement.querySelector('input:nth-child(2)').value;
-    const vertical = coordinateElement.querySelector('input[type="checkbox"]').checked;
-    const length = lengths[index];
-    if (playerGB.placeShip(parseInt(x) - 1, parseInt(y) - 1, length, vertical) === false) {
-      err = false;
-    }
-  });
-  if (err === true) {
+  const x = document.querySelector('.xCord').value;
+  const y = document.querySelector('.yCord').value;
+  const vertical = document.querySelector('input[type="checkbox"]').checked;
+  const length = lengths[0];
+  if (playerGB.placeShip(parseInt(x) - 1, parseInt(y) - 1, length, vertical) === false) {
+    error.style.display = 'block';
+  }
+  else {
+    error.style.display = 'none';
+    pboard.removeChild(pboard.firstChild);
+    pboard.append(playerGB.getGrid());
+    lengths.shift();
+    popTitle.innerHTML = 'Ship of length ' + lengths[0];
+    document.querySelector('.xCord').value = '';
+    document.querySelector('.yCord').value = '';
+  }
+  if (lengths.length === 0) {
+    lengths = [2, 3, 3, 4, 5];
     hideModalOverlay();
     pboard.removeChild(pboard.firstChild);
     pboard.append(playerGB.getGrid());
@@ -222,7 +229,6 @@ submit.addEventListener('click', (event) => {
           again.addEventListener('click', () => {
             // Remove the event listener before resetting
             cboard.removeEventListener('click', clickHandler);
-
             playerGB.resetBoard();
             compGB.resetBoard();
             pboard.removeChild(pboard.firstChild);
@@ -237,10 +243,7 @@ submit.addEventListener('click', (event) => {
       }
     };
     cboard.addEventListener('click', clickHandler);
-  } else {
-    playerGB.resetBoard();
-    error.style.display = 'block';
-  }
+  } 
 });
 
 module.exports = {
