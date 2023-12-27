@@ -191,9 +191,9 @@ form > h6 {
     background-color: green;
 }
 
-/* #cboard > .grid > .ship {
+#cboard > .grid > .ship {
     background-color: #ddd;
-} */
+}
 
 /* Winner popup */
 
