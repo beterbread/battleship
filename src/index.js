@@ -95,8 +95,15 @@ function Gameboard() {
     return true;
   };
 
+  const compSink = (x, y) => {
+    if (board[x][y] === 'hit') {
+      return true;
+    }
+    return false;
+  }
+
   return {
-    placeShip, receiveAttack, allSunk, getGrid, resetBoard, checkHit,
+    placeShip, receiveAttack, allSunk, getGrid, resetBoard, checkHit, compSink
   };
 }
 
@@ -108,15 +115,58 @@ const Player = () => {
   return { attack };
 };
 
+let hitShips = new Set(); // Global variable for computer
+
 const ComputerPlayer = () => {
   const attack = (gameboard) => {
-    let x = Math.floor(Math.random() * 10);
-    let y = Math.floor(Math.random() * 10);
-    while (gameboard.checkHit(x, y) === false) {
-      x = Math.floor(Math.random() * 10);
-      y = Math.floor(Math.random() * 10);
+    let check = false;  // Checks if there is adjacent squares to hit
+    if (hitShips.size !== 0) {
+      let check2 = false; // Checks if there is no adjacent square for coordinate
+      outerLoop: for (const coordinates of hitShips) {
+        const [x, y] = coordinates.split(' ').map(Number);
+        for (let xOffset = -1; xOffset <= 1; xOffset++) {
+          for (let yOffset = -1; yOffset <= 1; yOffset++) {
+            const adjacentX = x + xOffset;
+            const adjacentY = y + yOffset;
+            if (
+              adjacentX >= 0 && adjacentX < 10 &&
+              adjacentY >= 0 && adjacentY < 10
+            ) {
+              if (!hitShips.has(adjacentX + ' ' + adjacentY)) {
+                // Perform an attack on the adjacent position
+                if (gameboard.checkHit(adjacentX, adjacentY) === true) {
+                  gameboard.receiveAttack(adjacentX, adjacentY);
+                  if (gameboard.compSink(adjacentX, adjacentY)) {
+                    hitShips.add(adjacentX + " " + adjacentY);
+                  }
+                  check = true;
+                  check2 = true;
+                  break outerLoop;
+                }
+              }
+            }
+          }
+        }
+        if (check2 === false) { // Removes ship if there is no adjacent squares to attack
+          hitShips.delete(x + " " + y);
+        }
+        else {
+          check2 = false;
+        }
+      }
     }
-    gameboard.receiveAttack(x, y);
+    if (check === false) {
+      let x = Math.floor(Math.random() * 10);
+      let y = Math.floor(Math.random() * 10);
+      while (gameboard.checkHit(x, y) === false) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+      gameboard.receiveAttack(x, y);
+      if (gameboard.compSink(x, y)) {
+        hitShips.add(x + " " + y);
+      }
+    }
   };
 
   return { attack };
@@ -227,6 +277,7 @@ submit.addEventListener('click', (event) => {
           // Reset game
           const again = document.querySelector('.again');
           again.addEventListener('click', () => {
+            hitShips = new Set(); //Reset hit ships for bot
             // Remove the event listener before resetting
             cboard.removeEventListener('click', clickHandler);
             playerGB.resetBoard();
