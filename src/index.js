@@ -62,7 +62,7 @@ function Gameboard() {
   const getGrid = () => {
     const grid = document.createElement('div');
     grid.classList.add('grid');
-    for (let i = 0; i < 10; i++) {
+    for (let i = 9; i >= 0; i--) {
       for (let j = 0; j < 10; j++) {
         const tile = document.createElement('div');
         tile.classList.add('tile');
@@ -116,9 +116,23 @@ const Player = () => {
 };
 
 let hitShips = new Set(); // Global variable for computer
+let dumbBot = false;
 
 const ComputerPlayer = () => {
   const attack = (gameboard) => {
+    if (dumbBot === true) {
+      let x = Math.floor(Math.random() * 10);
+      let y = Math.floor(Math.random() * 10);
+      while (gameboard.checkHit(x, y) === false) {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      }
+      gameboard.receiveAttack(x, y);
+      if (gameboard.compSink(x, y)) {
+        hitShips.add(x + " " + y);
+      }
+    }
+    else {
     let check = false;  // Checks if there is adjacent squares to hit
     if (hitShips.size !== 0) {
       let check2 = false; // Checks if there is no adjacent square for coordinate
@@ -166,6 +180,7 @@ const ComputerPlayer = () => {
       if (gameboard.compSink(x, y)) {
         hitShips.add(x + " " + y);
       }
+    }
     }
   };
 
@@ -219,11 +234,82 @@ const popup = document.querySelector('#popup');
 const submit = document.querySelector('#formSubmit');
 const error = document.querySelector('#error');
 const popTitle = document.querySelector('.popTitle');
+const dumb = document.querySelector('#dumb');
 let lengths = [2, 3, 3, 4, 5];
+
+//Random button logic
+const random = document.querySelector('#random');
+random.addEventListener('click', (event) => {
+  if (dumb.checked) { dumbBot = true; }
+  else { dumbBot = false; }
+  
+  initializeCompGB(pboard, playerGB);
+  lengths = [2, 3, 3, 4, 5];
+    hideModalOverlay();
+    pboard.removeChild(pboard.firstChild);
+    pboard.append(playerGB.getGrid());
+    popup.style.display = 'none';
+    // Main game
+    // Define the event handler function
+    const clickHandler = function (event) {
+      const clickedTile = event.target;
+      if (clickedTile.classList.contains('tile')) {
+        const str1 = clickedTile.getAttribute('class');
+        if (!str1.includes('missed') && !str1.includes('hit')) {
+          const str2 = clickedTile.getAttribute('id');
+          const coordinates = str2.split(' ');
+          player.attack(compGB, parseInt(coordinates[0]), parseInt(coordinates[1]));
+          cboard.removeChild(cboard.firstChild);
+          cboard.append(compGB.getGrid());
+          compPlayer.attack(playerGB);
+          pboard.removeChild(pboard.firstChild);
+          pboard.append(playerGB.getGrid());
+          // Check for winner
+          const winPop = document.querySelector('.winPop');
+          const winner = document.querySelector('.winner');
+          if (compGB.allSunk() && playerGB.allSunk()) {
+            winPop.style.display = 'block';
+            winner.innerHTML = 'Tied game!';
+            showModalOverlay();
+          } else if (compGB.allSunk()) {
+            winPop.style.display = 'block';
+            winner.innerHTML = 'You win!';
+            showModalOverlay();
+          } else if (playerGB.allSunk()) {
+            winPop.style.display = 'block';
+            winner.innerHTML = 'You lose!';
+            showModalOverlay();
+          }
+          // Reset game
+          const again = document.querySelector('.again');
+          again.addEventListener('click', () => {
+            hitShips = new Set(); //Reset hit ships for bot
+            // Remove the event listener before resetting
+            cboard.removeEventListener('click', clickHandler);
+            playerGB.resetBoard();
+            compGB.resetBoard();
+            pboard.removeChild(pboard.firstChild);
+            cboard.removeChild(cboard.firstChild);
+            pboard.appendChild(playerGB.getGrid());
+            cboard.appendChild(compGB.getGrid());
+            initializeCompGB(cboard, compGB);
+            popup.style.display = 'block';
+            winPop.style.display = 'none';
+          });
+        }
+      }
+    };
+    cboard.addEventListener('click', clickHandler);
+});
+
+
 submit.addEventListener('click', (event) => {
+  if (dumb.checked) { dumbBot = true; }
+  else { dumbBot = false; }
+
   const x = document.querySelector('.xCord').value;
   const y = document.querySelector('.yCord').value;
-  const vertical = document.querySelector('input[type="checkbox"]').checked;
+  const vertical = document.querySelector('#vert').checked;
   const length = lengths[0];
   if (playerGB.placeShip(parseInt(x) - 1, parseInt(y) - 1, length, vertical) === false) {
     error.style.display = 'block';
