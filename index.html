@@ -16,19 +16,24 @@
     <div id="popup">
         <h6 class="place">Place your ships!</h6>
         <h6 class="joe">X are columns & Y are rows</h6>
-        <h6 class="joe">1 starts from top left</h6>
+        <h6 class="joe">1 starts from bottom left</h6>
         <form>
             <h6 class="popTitle">Ship of length 2</h6>
             <div class="coordinates">
+                <div class="dumb">
+                    <h6>Dumb bot?</h6>
+                    <input type="checkbox" id="dumb">   
+                </div>
                 <input class="xCord" type="number" min="1" max="10" placeholder="X"/>
                 <input class="yCord" type="number" min="1" max="10" placeholder="Y"/>
                 <div class="vertical">
                     <h6>Vertical?</h6>
-                    <input type="checkbox">   
+                    <input type="checkbox" id="vert">   
                 </div>
              </div>
              <h6 id="error">Invalid coordinates. Try again!</h6>
-             <input type="button" value="Add" id="formSubmit">
+             <input type="button" value="Add ship" id="formSubmit">
+             <input type="button" value="All random" id="random">
         </form>
     </div>
     <div class="boardCover">

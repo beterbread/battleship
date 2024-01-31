@@ -95,7 +95,7 @@ form, .place, .joe {
 
 form > h6 {
     font-size: 1.25vw;
-    margin-bottom: .5vw;
+    margin-bottom: 1.5vw;
 }
 
 .coordinates {
@@ -109,11 +109,11 @@ form > h6 {
     margin-bottom: 1.5vw;
 }
 
-.vertical > h6 {
+.vertical > h6, .dumb > h6 {
     font-size: 1vw;
 }
 
-.vertical > input {
+.vertical > input, .dumb > input {
     width: 1vw;
     height: 1vw;
 }
@@ -148,6 +148,20 @@ form > h6 {
 
 input[type="checkbox"]:hover {
     cursor:pointer;
+}
+
+#random {
+    border-radius: .25vw;
+    border: solid black .1vw;
+    background-color: white;
+    height: 3vw;
+    width: 8vw;
+    font-size: 1vw;
+}
+
+#random:hover {
+    background-color: #ddd;
+    cursor: pointer;
 }
 
 /* Boards */
