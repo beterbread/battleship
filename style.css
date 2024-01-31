@@ -146,6 +146,10 @@ form > h6 {
     display: none;
 }
 
+input[type="checkbox"]:hover {
+    cursor:pointer;
+}
+
 /* Boards */
 
 .boardCover {
