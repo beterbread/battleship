@@ -116,6 +116,8 @@ const Player = () => {
 };
 
 let hitShips = new Set(); // Global variable for computer
+let nextShips = "";
+let original = "";
 let dumbBot = false;
 
 const ComputerPlayer = () => {
@@ -134,14 +136,87 @@ const ComputerPlayer = () => {
     }
     else {
     let check = false;  // Checks if there is adjacent squares to hit
+    if (nextShips != "") {
+        check = true;
+        const li = nextShips.split(' ');
+        let x = Number(li[0]);
+        let y = Number(li[1]);
+        if (gameboard.checkHit(x, y) === true) {
+          gameboard.receiveAttack(x, y);
+          if (gameboard.compSink(x, y)) {
+            if (li[2] === "xPos" && x + 1 < 10) {
+             nextShips = (x + 1) + " " + y + " " + "xPos";
+            }
+            else if (li[2] === "xNeg" && x - 1 >= 0) {
+             nextShips = (x - 1) + " " + y + " " + "xNeg";
+            }
+            else if (li[2] === "yPos" && y + 1 < 10) {
+             nextShips = x + " " + (y + 1) + " " + "yPos";
+            }
+            else if (li[2] === "yNeg" && y - 1 >= 0) {
+              nextShips = x + " " + (y - 1) + " " + "yNeg";
+            }
+            else {
+               nextShips = original;
+               original = "";
+               hitShips = new Set();
+            }
+            } 
+            else {
+              nextShips = original;
+              original = "";
+              hitShips = new Set();
+           }
+        }
+        else {
+          nextShips = original;
+          original = "";
+          hitShips = new Set();
+          const li = nextShips.split(' ');
+          let x = Number(li[0]);
+          let y = Number(li[1]);
+          if (li.size === 2 && gameboard.checkHit(x, y) === true) {
+            gameboard.receiveAttack(x, y);
+            if (gameboard.compSink(x, y)) {
+              if (li[2] === "xPos" && x + 1 < 10) {
+               nextShips = (x + 1) + " " + y + " " + "xPos";
+              }
+              else if (li[2] === "xNeg" && x - 1 >= 0) {
+               nextShips = (x - 1) + " " + y + " " + "xNeg";
+              }
+              else if (li[2] === "yPos" && y + 1 < 10) {
+               nextShips = x + " " + (y + 1) + " " + "yPos";
+              }
+              else if (li[2] === "yNeg" && y - 1 >= 0) {
+                nextShips = x + " " + (y - 1) + " " + "yNeg";
+              }
+              else {
+                nextShips = original;
+                original = "";
+                hitShips = new Set();
+              }
+              }
+          }
+          else {
+            nextShips = original;
+            original = "";
+            hitShips = new Set();
+            check = false;
+          }
+        }
+    }
+    else
     if (hitShips.size !== 0) {
       let check2 = false; // Checks if there is no adjacent square for coordinate
       outerLoop: for (const coordinates of hitShips) {
         const [x, y] = coordinates.split(' ').map(Number);
-        for (let xOffset = -1; xOffset <= 1; xOffset++) {
-          for (let yOffset = -1; yOffset <= 1; yOffset++) {
-            const adjacentX = x + xOffset;
-            const adjacentY = y + yOffset;
+        const offsets = [
+          [x + 1, y],
+          [x - 1, y],
+          [x, y + 1],
+          [x, y - 1]
+        ];      
+        for (const [adjacentX, adjacentY] of offsets) {
             if (
               adjacentX >= 0 && adjacentX < 10 &&
               adjacentY >= 0 && adjacentY < 10
@@ -152,13 +227,37 @@ const ComputerPlayer = () => {
                   gameboard.receiveAttack(adjacentX, adjacentY);
                   if (gameboard.compSink(adjacentX, adjacentY)) {
                     hitShips.add(adjacentX + " " + adjacentY);
+                    hitShips.delete(x + " " + y);
+                    if (adjacentX - 1 === x && adjacentX + 1 < 10) {
+                      nextShips = (adjacentX + 1) + " " + adjacentY + " " + "xPos";
+                      if (adjacentX - 2 >= 0) {
+                        original = (adjacentX - 2) + " " + y + " " + "xNeg";
+                      }
+                    }
+                    if (adjacentX + 1 === x && adjacentX - 1 >= 0) {
+                      nextShips = (adjacentX - 1) + " " + adjacentY + " " + "xNeg";
+                      if (adjacentX + 2 < 10) {
+                        original = (adjacentX + 2) + " " + y + " " + "xPos";
+                      }
+                    }
+                    if (adjacentY - 1 === y && adjacentY + 1 < 10) {
+                      nextShips = adjacentX + " " + (adjacentY + 1) + " " + "yPos";
+                      if (adjacentY - 2 >= 0) {
+                        original = adjacentX + " " + (adjacentY - 2) + " " + "yNeg";
+                      }
+                    }
+                    if (adjacentY + 1 === y && adjacentY - 1 >=0) {
+                      nextShips = adjacentX + " " + (adjacentY - 1) + " " + "yNeg";
+                      if (adjacentY + 2 < 10) {
+                        original = adjacentX + " " + (adjacentY + 2) + " " + "yPos";
+                      }
+                    }
                   }
                   check = true;
                   check2 = true;
                   break outerLoop;
                 }
               }
-            }
           }
         }
         if (check2 === false) { // Removes ship if there is no adjacent squares to attack
@@ -183,7 +282,6 @@ const ComputerPlayer = () => {
     }
     }
   };
-
   return { attack };
 };
 
