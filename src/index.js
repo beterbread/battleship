@@ -175,7 +175,7 @@ const ComputerPlayer = () => {
           const li = nextShips.split(' ');
           let x = Number(li[0]);
           let y = Number(li[1]);
-          if (li.size === 3 && gameboard.checkHit(x, y) === true) {
+          if (li.length === 3 && gameboard.checkHit(x, y) === true) {
             gameboard.receiveAttack(x, y);
             if (gameboard.compSink(x, y)) {
               if (li[2] === "xPos" && x + 1 < 10) {
